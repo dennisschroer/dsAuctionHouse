@@ -1,0 +1,71 @@
+general:
+   # lifetime of an auction in seconds
+   auction_lifetime: 3600
+   tax_percentage: 0.10
+   #stick=280
+   selectiontool: 280 
+   # Should the player only be able to sell/buy in auctionZones?
+   restrict_to_auctionzones: true
+database:
+   # URL of the database
+   url: 'jdbc:mysql://localhost:3306/'
+   database: 'database'
+   user: 'username'
+   password: 'password'
+   # The table in which to store kills and deaths
+   table_auctions: dsauction_auctions
+messages:
+   # Main menu of the plugin
+   menu_header: '&8==========={ &edsAuctionHouse &8}==========='
+   menu_sell: ' &e/auction sell <amount> <price> &f- Sell the item in your hand'
+   menu_info: ' &e/auction info <id> &f- More info about this auction'
+   menu_buy: ' &e/auction buy <id> &f- Buy the item with this id'
+   menu_cancel: ' &e/auction cancel <id> &f- Cancel the auction with this id'
+   menu_list: ' &e/auction list &f- List all open auctions (not yours)'
+   menu_mine: ' &e/auction mine &f- List all your open auctions'
+   menu_claim: ' &e/auction claim &f- Show all your canceled auctions'
+   menu_claim2: ' &e/auction claim [id|all] &f- Claim the items of your canceled auctions'
+   menu_search: ' &e/auction search <id|name> &f- Search for auctions'
+   menu_zone: ' &e/auction zone [save|list|remove] [name] &f- Edit auction zones'
+   # The format when calling /auction list, /auctiom mine or /auction search
+   auction_list_header: '&8==========={ &eAuctions &8}==========='
+   # A line in the list of auctions
+   # Possible tags: {id} {player} {item} {amount} {price} {timeleft}
+   auction_list_line: '&e#{id}&8|&f{player}&8|&e{amount} {item} &ffor &e{price}'
+   # The lines send on /auction info <id>
+   # Possible tags: {id} {player} {item} {amount} {price} {enchantments} {durability} {timeleft}
+   auction_info:
+     - '&8==== &fAuction &e#{id} &fsold by &e{player} &8===='
+     - 'Item: &e{amount} {item}&f. Price: &e{price}'
+     - 'Enchantments: &e{enchantments}'
+     - 'Durability: &e{durability}'
+     - 'Time left: &e{timeleft}'
+     - 'Use &e/auction buy {id} &fto buy this item'
+   no_open_auctions: '&fThere are no open auctions'
+   no_expired_auctions: '&fThere are no expired auctions'
+   # The broadcast format when somebody sells something
+   # Possible tags: {id} {player} {item} {amount} {price} {timeleft}
+   item_for_sale: '&8[&eAuction&8] &e{player} &fsells &e{amount} {item} &ffor &e{price}&f. Buy with ID &e{id}'
+   you_started_auction: '&8[&eAuction&8] &fYou payed &e{tax} &fto start this auction'
+   # Message after the time has expired
+   not_sold: '&8[&eAuction&8] &cNobody bought your item'
+   after_cancel: 'You can get your items back by using &e/auction claim <id|all>'
+   item_sold: '&8[&eAuction&8] &fYou sold &e{amount} {item} &ffor &e{price} &fto &e{player}'
+   item_bought: '&8[&eAuction&8] &fYou bought &e{amount} {item} &ffor &e{price} &ffrom &e{player}'
+   sale_canceled: '&8[&eAuction&8] &fYou canceled your auction'
+   zone_saved: '&8[&eAuction&8] &fAuction zone saved'
+   zone_removed: '&8[&eAuction&8] &fAuction zone removed'
+   zone_list: '&8[&eAuction&8] &eAuction zones: &f{list}'
+   you_have_expired_auctions: '&8[&eAuction&8] &fYou have &e{count} &fexpired auctions.'
+   error_no_player: '&8[&eAuction&8] &cYou need to be a player to do this!'
+   error_amount_not_correct: '&8[&eAuction&8] &cYour amount is not correct or you don`t have enough items of this!'
+   error_price_not_correct: '&8[&eAuction&8] &cOnly positive prices are allowed!'
+   error_not_enough_money: '&8[&eAuction&8] &cYou don`t have enough money!'
+   error_not_enough_space: '&8[&eAuction&8] &cYou don`t have enough space in your inventory!'
+   error_not_a_number: '&8[&eAuction&8] &cThat is not a valid number!'
+   error_not_your_auction: '&8[&eAuction&8] &cThat is not your auction!'
+   error_auction_not_exists: '&8[&eAuction&8] &cThat auction doesn`t exist!'
+   error_not_in_auction_zone: '&8[&eAuction&8] &cYou can only do this if you are in an auction zone.'
+   error_set_locations_first: '&8[&eAuction&8] &cYou need to set the locations first.'
+   error_auction_still_open: '&8[&eAuction&8] &cYou can`t claim items of an open auction. Use /auction cancel first.'
+   error_zone_not_found: '&8[&eAuction&8] &cAuction zone with that name not found'

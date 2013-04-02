@@ -1,0 +1,21 @@
+name: dsAuctionHouse
+main: denniss17.dsAuctionHouse.DS_AuctionHouse
+version: 1.0.0
+author: denniss17
+description: Allows players to sell and buy items in specific areas
+depend: [Vault]
+commands:
+   auction:
+      description: Lists all of the commands
+      aliases: [auc]
+      permission: ds_auction.auction
+      usage: /<command>
+permissions:
+   ds_auction.auction:
+      description: Permission to use /auction
+      default: true
+   ds_auction.admin:
+      description: Permission to admin commands
+      default: op
+      children:
+         ds_auction.auction: true
