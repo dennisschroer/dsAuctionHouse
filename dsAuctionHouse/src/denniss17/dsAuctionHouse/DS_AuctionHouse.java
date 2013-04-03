@@ -2,6 +2,7 @@ package denniss17.dsAuctionHouse;
 
 
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import net.milkbowl.vault.economy.Economy;
@@ -179,6 +180,21 @@ public class DS_AuctionHouse extends JavaPlugin {
 	
 	public void broadcastMessage(String message){
 		getServer().broadcastMessage(ChatStyler.setTotalStyle(message));
+	}
+	
+	public boolean hasPermission(CommandSender user, String permission){
+		return user.hasPermission("ds_auction." + permission);
+	}
+	
+	public int getMaxAuctions(Player player){
+		int result = getConfig().getInt("general.max_auctions.default");
+		for(String name : getConfig().getConfigurationSection("general.max_auctions").getKeys(false)){
+			if(hasPermission(player, "max_auctions." + name)){
+				if(getConfig().getInt("general.max_auctions." + name) > result)
+					result = getConfig().getInt("general.max_auctions." + name);
+			}
+		}
+		return result;
 	}
 	
 	

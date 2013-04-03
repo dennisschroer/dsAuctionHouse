@@ -1,13 +1,24 @@
 general:
    # lifetime of an auction in seconds
    auction_lifetime: 3600
+   # The percentage (between 0 and 1) of the price a player should pay
+   # to start an auction
    tax_percentage: 0.10
-   #stick=280
+   # The id of the tool to select auctionZones with (default=stick=280)
    selectiontool: 280 
    # Should the player only be able to sell/buy in auctionZones?
    restrict_to_auctionzones: true
+   # The maximum auctions a player can have
+   # This is specified as <groupname>: <amount>
+   # Players will be checked on the permission ds_auctions.max_auctions.<groupname>
+   # The maximum of the resulting numbers will be chosen as the amount of auctions a player
+   # can have. If the player has none of the permissions, it will have the amount of the
+   # default group.
+   max_auctions:
+      default: 5
 database:
    # URL of the database
+   # format: jdbc:<type>:<address>
    url: 'jdbc:mysql://localhost:3306/'
    database: 'database'
    user: 'username'

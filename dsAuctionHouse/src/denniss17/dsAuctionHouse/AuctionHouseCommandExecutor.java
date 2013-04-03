@@ -512,7 +512,7 @@ public class AuctionHouseCommandExecutor implements CommandExecutor {
 	}
 	
 	private boolean cmdAuctionZone(CommandSender sender, Command cmd, String commandlabel, String[] args) {
-		if(!sender.hasPermission("ds_auction.admin")){
+		if(!plugin.hasPermission(sender, "admin")){
 			return false;
 		}	
 		
@@ -591,7 +591,7 @@ public class AuctionHouseCommandExecutor implements CommandExecutor {
 		plugin.sendMessage(sender, plugin.getConfig().getString("messages.menu_claim"));
 		plugin.sendMessage(sender, plugin.getConfig().getString("messages.menu_claim2"));
 		plugin.sendMessage(sender, plugin.getConfig().getString("messages.menu_search"));
-		if(sender.hasPermission("ds_auction.admin")){
+		if(plugin.hasPermission(sender, "admin")){
 			plugin.sendMessage(sender, plugin.getConfig().getString("messages.menu_zone"));
 		}
 		

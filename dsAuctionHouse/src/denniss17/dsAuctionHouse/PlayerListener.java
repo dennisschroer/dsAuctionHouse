@@ -35,7 +35,7 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
-		if ((player.getItemInHand().getTypeId() == plugin.getConfig().getInt("general.selectiontool")) && (player.hasPermission("ds_auction.admin"))) {
+		if ((player.getItemInHand().getTypeId() == plugin.getConfig().getInt("general.selectiontool")) && (plugin.hasPermission(player, "admin"))) {
 			Block b = event.getClickedBlock();
 			if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 				loc1 = b.getLocation().clone();
