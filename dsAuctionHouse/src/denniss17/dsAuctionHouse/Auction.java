@@ -1,5 +1,6 @@
 package denniss17.dsAuctionHouse;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
@@ -101,15 +102,18 @@ public class Auction {
 	}
 	
 	public String getItemName(){
-		if(itemStack.getType().equals(Material.POTION)){
+		String name;
+		if(itemStack.getItemMeta().hasDisplayName()){
+			name= ChatColor.ITALIC + itemStack.getItemMeta().getDisplayName();
+		}else if(itemStack.getType().equals(Material.POTION)){
 			Potion potion = Potion.fromItemStack(itemStack);
-			String name = potion.isSplash() ? "SPLASH " : "";
-			return name + "POTION OF " + potion.getType().toString();
+			name = potion.isSplash() ? "SPLASH " : "";
+			name = name + "POTION OF " + potion.getType().toString();
 		}else{
-			String name = itemStack.getType().toString();
+			name = itemStack.getType().toString();
 			if(itemStack.getDurability()!=0) name += "-" + itemStack.getDurability();
-			return name;
 		}
+		return name;
 	}
 	
 	@Override

@@ -21,7 +21,7 @@ messages:
    menu_info: ' &e/auction info <id> &f- More info about this auction'
    menu_buy: ' &e/auction buy <id> &f- Buy the item with this id'
    menu_cancel: ' &e/auction cancel <id> &f- Cancel the auction with this id'
-   menu_list: ' &e/auction list &f- List all open auctions (not yours)'
+   menu_list: ' &e/auction list [page] &f- List all open auctions (not yours)'
    menu_mine: ' &e/auction mine &f- List all your open auctions'
    menu_claim: ' &e/auction claim &f- Show all your canceled auctions'
    menu_claim2: ' &e/auction claim [id|all] &f- Claim the items of your canceled auctions'
@@ -33,18 +33,23 @@ messages:
    # Possible tags: {id} {player} {item} {amount} {price} {timeleft}
    auction_list_line: '&e#{id}&8|&f{player}&8|&e{amount} {item} &ffor &e{price}'
    # The lines send on /auction info <id>
-   # Possible tags: {id} {player} {item} {amount} {price} {enchantments} {durability} {timeleft}
+   # First lines, always sended. Possible tags: {id} {player} {item} {material} {amount} {price} {timeleft}
    auction_info:
-     - '&8==== &fAuction &e#{id} &fsold by &e{player} &8===='
-     - 'Item: &e{amount} {item}&f. Price: &e{price}'
-     - 'Enchantments: &e{enchantments}'
-     - 'Durability: &e{durability}'
-     - 'Time left: &e{timeleft}'
-     - 'Use &e/auction buy {id} &fto buy this item'
+     - '&8===== &fAuction &e#{id} &fsold by &e{player} &8====='
+     - '&8| &7Item: &e{amount} {item}    &7(Material: {material})'
+     - '&8| &7Price: &e{price}           &7Timeleft: &e{timeleft}'
+   # Line only send if item has enchantments
+   auction_info_enchantments: '&8| &7Enchantments: &e{enchantments}'
+   # Line only send if item has durability
+   auction_info_durability: '&8| &7Durability: &e{durability}'
+   # The last line of /auction info. Always send. Only possible tag: {id}
+   auction_info_bottom: '&8| &fUse &e/auction buy {id} &fto buy this item'
+   auction_list_more: 'Use &e/auction list {page} &fto see more'
+   auction_mine_more: 'Use &e/auction mine {page} &fto see more'
    no_open_auctions: '&fThere are no open auctions'
    no_expired_auctions: '&fThere are no expired auctions'
    # The broadcast format when somebody sells something
-   # Possible tags: {id} {player} {item} {amount} {price} {timeleft}
+   # Possible tags: {id} {player} {item} {material} {price} {timeleft}
    item_for_sale: '&8[&eAuction&8] &e{player} &fsells &e{amount} {item} &ffor &e{price}&f. Buy with ID &e{id}'
    you_started_auction: '&8[&eAuction&8] &fYou payed &e{tax} &fto start this auction'
    # Message after the time has expired
@@ -53,10 +58,13 @@ messages:
    item_sold: '&8[&eAuction&8] &fYou sold &e{amount} {item} &ffor &e{price} &fto &e{player}'
    item_bought: '&8[&eAuction&8] &fYou bought &e{amount} {item} &ffor &e{price} &ffrom &e{player}'
    sale_canceled: '&8[&eAuction&8] &fYou canceled your auction'
+   
    zone_saved: '&8[&eAuction&8] &fAuction zone saved'
    zone_removed: '&8[&eAuction&8] &fAuction zone removed'
    zone_list: '&8[&eAuction&8] &eAuction zones: &f{list}'
+   # Message showed when a player logs in and has expired auctions
    you_have_expired_auctions: '&8[&eAuction&8] &fYou have &e{count} &fexpired auctions.'
+   # Error messages
    error_no_player: '&8[&eAuction&8] &cYou need to be a player to do this!'
    error_amount_not_correct: '&8[&eAuction&8] &cYour amount is not correct or you don`t have enough items of this!'
    error_price_not_correct: '&8[&eAuction&8] &cOnly positive prices are allowed!'

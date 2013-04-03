@@ -108,9 +108,8 @@ public class DS_AuctionHouse extends JavaPlugin {
 	}
 	
 	public void removeAuctionZone(AuctionZone auctionZone){
-		auctionZones.add(auctionZone);
-		this.getConfig().set("zones." + auctionZone.getName() + ".loc1", null);
-		this.getConfig().set("zones." + auctionZone.getName() + ".loc2", null);
+		auctionZones.remove(auctionZone);
+		this.getConfig().set("zones." + auctionZone.getName(), null);
 		this.saveConfig();
 	}
 	

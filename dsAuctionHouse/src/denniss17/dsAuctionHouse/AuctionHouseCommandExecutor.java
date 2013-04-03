@@ -144,7 +144,7 @@ public class AuctionHouseCommandExecutor implements CommandExecutor {
 					}
 					
 					String enchantments = "";
-					String durability = "Not applicable";
+					String durability = null;
 					for(Entry<Enchantment, Integer> entry : auction.getItemStack().getEnchantments().entrySet()){
 						enchantments += entry.getKey().getName() + ' ' + entry.getValue() + ", ";
 					}
@@ -153,20 +153,33 @@ public class AuctionHouseCommandExecutor implements CommandExecutor {
 								(100*(auction.getItemStack().getType().getMaxDurability()-auction.getItemStack().getDurability()))
 								/auction.getItemStack().getType().getMaxDurability()) + '%';
 					}
-					if(enchantments.equals("")) enchantments = "None";
 					
+					// Send first lines
 					for(String msg : plugin.getConfig().getStringList("messages.auction_info")){
 						plugin.sendMessage(player, msg
 								.replace("{player}", player.getName())
 								.replace("{id}", String.valueOf(auction.getId()))
 								.replace("{item}", auction.getItemName())
+								.replace("{material}", auction.getItemStack().getType().toString())
 								.replace("{amount}" , String.valueOf(auction.getItemStack().getAmount()))
 								.replace("{price}", String.valueOf(auction.getPrice()))
 								.replace("{timeleft}", DS_AuctionHouse.secondsToString(auction.getTimeLeft()))
-								.replace("{enchantments}", enchantments)
-								.replace("{durability}", durability)
 								);
 					}
+					// Send enchantments
+					if(!enchantments.equals("")){
+						plugin.sendMessage(player, plugin.getConfig().getString("messages.auction_info_enchantments")
+								.replace("{enchantments}", enchantments));
+					}
+					// Send durability
+					if(durability!=null){
+						plugin.sendMessage(player, plugin.getConfig().getString("messages.auction_info_durability")
+								.replace("{durability}", durability));
+					}
+					// Send bottom line
+					plugin.sendMessage(player, plugin.getConfig().getString("messages.auction_info_bottom")
+							.replace("{id}", String.valueOf(auction.getId())));
+					
 					
 					return true;				
 				}catch(NumberFormatException e){
@@ -314,21 +327,19 @@ public class AuctionHouseCommandExecutor implements CommandExecutor {
 				}
 				if(page<1) page=1;
 			}
-			
-			
-			
-			
+			int pagestart = (page-1) * 10;
 			
 			plugin.sendMessage(sender, plugin.getConfig().getString("messages.auction_list_header"));
 			
 			int count = 0;
 			for(Auction auction : DS_AuctionHouse.auctionManager.getAuctions().values()){
 				if(!auction.isExpired() && !auction.getOfflinePlayer().equals(player)){
-					plugin.sendMessage(sender, auction.toString());
+					if(count>=pagestart && count<(pagestart+10)) plugin.sendMessage(sender, auction.toString());
 					count++;
 				}
 			}	
-			if(count==0) plugin.sendMessage(sender, plugin.getConfig().getString("messages.no_open_auctions"));
+			if(count<=pagestart) plugin.sendMessage(sender, plugin.getConfig().getString("messages.no_open_auctions"));
+			if(count>pagestart+10) plugin.sendMessage(sender, plugin.getConfig().getString("messages.auction_list_more").replace("{page}", String.valueOf(page+1)));
 			
 			return true;
 		}else{
@@ -345,16 +356,30 @@ public class AuctionHouseCommandExecutor implements CommandExecutor {
 				plugin.sendMessage(player, plugin.getConfig().getString("messages.error_not_in_auction_zone"));
 				return true;
 			}
+			
+			// Pages
+			int page = 1;
+			if(args.length>=2){
+				try{
+					page = Integer.parseInt(args[1]);
+				}catch(NumberFormatException e){
+					// Nothing, show page 1
+				}
+				if(page<1) page=1;
+			}
+			int pagestart = (page-1) * 10;
+			
 			plugin.sendMessage(sender, plugin.getConfig().getString("messages.auction_list_header"));
 			
 			int count = 0;
 			for(Auction auction : DS_AuctionHouse.auctionManager.getAuctions().values()){
 				if(!auction.isExpired() && auction.getOfflinePlayer().equals(player)){
-					plugin.sendMessage(sender, auction.toString());
+					if(count>=pagestart && count<(pagestart+10)) plugin.sendMessage(sender, auction.toString());
 					count++;
 				}
 			}	
-			if(count==0) plugin.sendMessage(sender, plugin.getConfig().getString("messages.no_open_auctions"));
+			if(count<=pagestart) plugin.sendMessage(sender, plugin.getConfig().getString("messages.no_open_auctions"));
+			if(count>pagestart+10) plugin.sendMessage(sender, plugin.getConfig().getString("messages.auction_mine_more").replace("{page}", String.valueOf(page+1)));
 			
 			return true;
 		}else{
@@ -487,6 +512,10 @@ public class AuctionHouseCommandExecutor implements CommandExecutor {
 	}
 	
 	private boolean cmdAuctionZone(CommandSender sender, Command cmd, String commandlabel, String[] args) {
+		if(!sender.hasPermission("ds_auction.admin")){
+			return false;
+		}	
+		
 		if(args.length>=2){
 			if(args[1].equals("save")){
 				if(PlayerListener.loc1!=null && PlayerListener.loc2!=null){
