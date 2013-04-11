@@ -59,11 +59,19 @@ public class AuctionHouseCommandExecutor implements CommandExecutor {
 		if(args.length>=3){
 			if(sender instanceof Player){
 				Player player = (Player)sender;
+				
+				// Check location
 				AuctionZone currentZone = plugin.getAuctionZone(player.getLocation());
 				if(plugin.getConfig().getBoolean("general.restrict_to_auctionzones") && currentZone==null){
 					plugin.sendMessage(player, plugin.getConfig().getString("messages.error_not_in_auction_zone"));
 					return true;
 				}
+				
+				// Check number of auctions
+				
+				
+				
+				
 				try{
 					ItemStack itemStack = player.getInventory().getItemInHand();
 					double price = Double.parseDouble(args[2]);

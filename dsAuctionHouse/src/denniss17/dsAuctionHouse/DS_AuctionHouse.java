@@ -186,6 +186,16 @@ public class DS_AuctionHouse extends JavaPlugin {
 		return user.hasPermission("ds_auction." + permission);
 	}
 	
+	public int getNumberOfAuctions(Player player){
+		int count = 0;
+		for(Auction auction : auctionManager.getAuctions().values()){
+			if(auction.getOfflinePlayer().equals(player)){
+				count++;
+			}
+		}	
+		return count;
+	}
+	
 	public int getMaxAuctions(Player player){
 		int result = getConfig().getInt("general.max_auctions.default");
 		for(String name : getConfig().getConfigurationSection("general.max_auctions").getKeys(false)){
